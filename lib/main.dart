@@ -32,22 +32,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   CounterStream counterStream = CounterStream();
-  int _counter = 0;
-  StreamSubscription<int> streamSubscription;
 
   @override
   void initState() {
-    // TODO: implement initState
-    streamSubscription =
-        counterStream.counterUpdates.listen((newVal) => setState(() {
-              _counter = newVal;
-            }));
     super.initState();
-  }
-
-  void dispose() {
-    streamSubscription?.cancel();
-    super.dispose();
   }
 
   @override
@@ -57,21 +45,29 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'You have pushed the button this many times:',
+          ),
+          StreamBuilder<int>(
+              // initialData: 0,
+              stream: this.counterStream.counterUpdates,
+              builder: (context, snappShot) {
+                String valueAsString = '0';
+                if (snappShot != null && snappShot.hasData) {
+                  valueAsString = snappShot.data.toString();
+                }
+                return Text(
+                  valueAsString,
+                  style: Theme.of(context).textTheme.display1,
+                );
+              }),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
-        onPressed: counterStream.incrementCounter,
+        onPressed: this.counterStream.incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
