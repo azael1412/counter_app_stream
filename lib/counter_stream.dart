@@ -9,7 +9,12 @@ class CounterStream {
   // }
 
   void incrementCounter() {
-    _counter++;
-    _streamController.add(_counter);
+    this._counter++;
+    this._streamController.sink.add(this._counter);
+    // this._streamController.add(this._counter);
+  }
+
+  void dispose() {
+    this._streamController.close();
   }
 }
