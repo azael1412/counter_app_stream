@@ -38,15 +38,15 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    streamSubscription =
-        counterStream.counterUpdates.listen((newVal) => setState(() {
+    this.streamSubscription =
+        this.counterStream.counterUpdates.listen((newVal) => setState(() {
               _counter = newVal;
             }));
     super.initState();
   }
 
   void dispose() {
-    streamSubscription?.cancel();
+    this.streamSubscription?.cancel();
     super.dispose();
   }
 
@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -71,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: counterStream.incrementCounter,
+        onPressed: this.counterStream.incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
